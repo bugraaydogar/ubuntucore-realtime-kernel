@@ -1,0 +1,56 @@
+name: pc-kernel
+version: 1.0.1
+version-script: |
+    . debian/debian.env
+    dpkg-parsechangelog -l $DEBIAN/changelog -S version
+summary: The Ubuntu generic Linux kernel
+description: This Ubuntu generic Linux kernel
+grade: stable
+confinement: strict
+type: kernel
+build-base: core18
+
+
+parts:
+  kernel:
+    plugin: kernel
+    source: git://kernel.ubuntu.com/ubuntu/ubuntu-focal.git
+    source-type: git
+    source-tag: Ubuntu-5.4.0-65.73
+    kconfigflavour: generic
+    kconfigs:
+      - CONFIG_DEBUG_INFO=n
+    kernel-initrd-modules:
+      - ahci
+      - libahci
+      - usb-storage
+      - nls_iso8859-1
+      - virtio_scsi
+      - sdhci
+      - sdhci-pci
+      - sdhci-acpi
+      - mmc-block
+      - hv_storvsc
+      - hv_vmbus
+    override-pull: |
+      snapcraftctl pull
+      set -e 
+      echo "Applying the RealTime patch"
+      git apply -v ../../../patches/patch-5.4.78-rt44.patch
+    override-build: |
+      cp debian/scripts/retpoline-extract-one \
+        $SNAPCRAFT_PART_BUILD/scripts/ubuntu-retpoline-extract-one
+      snapcraftctl build
+    kernel-with-firmware: false
+  firmware:
+    plugin: nil
+    stage-packages:
+      - linux-firmware
+    organize:
+      lib/firmware: firmware
+    prime:
+      - -usr
+      - -lib
+    build-packages:
+      - cpio
+      - libssl-dev
