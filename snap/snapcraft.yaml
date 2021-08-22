@@ -20,6 +20,7 @@ parts:
     kconfigflavour: generic
     kconfigs:
       - CONFIG_DEBUG_INFO=n
+    kernel-image-target: bzImage
     kernel-initrd-modules:
       - ahci
       - libahci
@@ -42,6 +43,9 @@ parts:
         $SNAPCRAFT_PART_BUILD/scripts/ubuntu-retpoline-extract-one
       snapcraftctl build
     kernel-with-firmware: false
+    build-packages:
+      - bison
+      - flex
   firmware:
     plugin: nil
     stage-packages:
