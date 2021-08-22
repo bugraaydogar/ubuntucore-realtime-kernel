@@ -36,7 +36,7 @@ parts:
       snapcraftctl pull
       set -e 
       echo "Applying the RealTime patch"
-      git apply -v ../../../patches/patch-5.4.78-rt44.patch
+      patch -p1 <../../../patches/patch-5.4.78-rt44.patch
     override-build: |
       cp debian/scripts/retpoline-extract-one \
         $SNAPCRAFT_PART_BUILD/scripts/ubuntu-retpoline-extract-one
