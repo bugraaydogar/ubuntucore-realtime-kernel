@@ -18,6 +18,7 @@ parts:
     kconfigs:
       - CONFIG_DEBUG_INFO=n
     # configuring RT patch
+      - CONFIG_AUFS_FS=n
       - CONFIG_EXPERT=y
       - CONFIG_PREEMPT_RT=y
 
