@@ -1,8 +1,5 @@
 name: pc-kernel
 version: 1.0.1
-version-script: |
-    . debian/debian.env
-    dpkg-parsechangelog -l $DEBIAN/changelog -S version
 summary: The Ubuntu generic Linux kernel
 description: This Ubuntu generic Linux kernel
 grade: stable
@@ -20,6 +17,10 @@ parts:
     kconfigflavour: generic
     kconfigs:
       - CONFIG_DEBUG_INFO=n
+    # configuring RT patch
+      - CONFIG_EXPERT=y
+      - CONFIG_PREEMPT_RT=y
+
     kernel-image-target: bzImage
     kernel-initrd-modules:
       - ahci
@@ -42,6 +43,7 @@ parts:
       cp debian/scripts/retpoline-extract-one \
         $SNAPCRAFT_PART_BUILD/scripts/ubuntu-retpoline-extract-one
       snapcraftctl build
+      snapcraftctl set-version "$(git tag)"
     kernel-with-firmware: false
     build-packages:
       - bison
