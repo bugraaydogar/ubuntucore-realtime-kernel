@@ -5,7 +5,7 @@ https://bugraaydogar.medium.com/real-time-kernel-on-ubuntu-core-70f2e41c1080
 
 ## Purpose & Description
 
-This repository is created to demonstrate how to build a customer kernel snap with PREEMPT_RT patch.
+This repository is created to demonstrate how to build a custom kernel snap with PREEMPT_RT patch.
 Also it can be used as a reference to create custom Linux kernel snap.
 
 
@@ -30,15 +30,15 @@ To clarify it, Ubuntu-5.4.0–65.73 is based on Linux Kernel 5.4.78 so, you have
 - install lxd and create a focal (20.04) lxd container
 
     ```
-    $ sudo snap install lxd
-    $ sudo lxd init --auto
-    $ sudo lxc launch ubuntu:20.04 focal
+    $ snap install lxd
+    $ lxd init --auto
+    $ lxc launch ubuntu:20.04 focal
     ```
 
 - enter the container and install snapcraft
 
     ```
-    $ sudo lxc shell focal
+    $ lxc shell focal
     # snap install snapcraft --classic
     ```
 
